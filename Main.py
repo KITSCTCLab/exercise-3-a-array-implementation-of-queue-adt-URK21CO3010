@@ -29,9 +29,7 @@ class Solution:
           True if it is empty, else returns False.
         """
         # Write your code here
-        if len(stack) == 0:
-            return True
-        return False
+        return front == -1
 
     def is_queue_empty(self):
         """
@@ -40,9 +38,7 @@ class Solution:
           True if it is empty, else returns False.
         """
         # Write your code here
-        if len(queue) == 0:
-            return True
-        return False
+        return front == -1
 
     def is_stack_full(self):
         """
@@ -51,9 +47,7 @@ class Solution:
           True if it is full, else returns False.
         """
         # Write your code here
-        if len(stack) == size:
-            return True
-        return False
+        return rear == self.size - 1
 
     def is_queue_full(self):
         """
@@ -62,9 +56,7 @@ class Solution:
           True if it is full, else returns False.
         """
         # Write your code here
-        if len(queue) == size:
-            return True
-        return False
+        return rear == self.size - 1
 
     def push_character(self, character):
         """
@@ -84,8 +76,8 @@ class Solution:
         """
         # Write your code here
         if not self.is_queue_full:
-            rear += 1
-            self.queue[rear] = character
+            self.rear += 1
+            self.queue.append(character)
 
     def pop_character(self):
         """
@@ -106,7 +98,10 @@ class Solution:
         """
         # Write your code here
         if not self.is_queue_empty:
-            return self.queue[self.front]
+            self.front += 1
+            x = self.queue[self.front]
+            return x
+                
 
 
 # read the string text
@@ -122,10 +117,9 @@ solution = Solution(length_of_text)
 
 for index in range(length_of_text):
     # Write code here
-    if index % 2 == 0:
-        solution.push_character(text[index])
-    else:
-        solution.enqueue_character(text[index])
+    
+    solution.push_character(text[index])
+    solution.enqueue_character(text[index])
     
 is_palindrome = True
 
@@ -137,12 +131,13 @@ If the comparison fails, set is_palindrome as False.
 '''
 # Write the necessary logic
 
-for index in range(length_of_text // 2):
+for index in range(length_of_text):
     item1 = solution.pop_character()
     item2 = solution.dequeue_character()
     if item1 == item2:
         continue
-    is_palindrome = False
+    else:
+        is_palindrome = False
 
 # finally print whether string text is palindrome or not.
 if is_palindrome:

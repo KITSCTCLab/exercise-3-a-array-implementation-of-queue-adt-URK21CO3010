@@ -16,7 +16,7 @@ class Solution():
     
     def dequeue(self):
             self.front += 1
-            x = self.queue[self.front]
+            x = self.queue.pop()
             return x
     
     def enqueue(self, item):

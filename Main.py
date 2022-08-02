@@ -31,6 +31,13 @@ for char in string:
     solution.enqueue(char)
     solution.push(char)
 
+temp = []
+
+for index in range(len(solution.queue) - 1, -1, -1):
+    temp.append(solution.queue[index])
+
+solution.queue = temp
+    
 size = 6
 
 retval = True

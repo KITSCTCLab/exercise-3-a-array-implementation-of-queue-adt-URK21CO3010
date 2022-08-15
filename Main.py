@@ -1,53 +1,135 @@
-class Solution():
-    
-    def __init__(self, sizeArg):
-        self.size = sizeArg
-        self.front = -1
-        self.rear = -1
-        self.queue = []
+class Solution:
+    """This class implements linear queue.
+      Attributes:
+          stack: A list which maintains the content of stack.
+          queue: A list which maintains the content of queue.
+          top: An integer which denotes the index of the element at the top of the stack.
+          front: An integer which denotes the index of the element at the front of the queue.
+          rear: An integer which denotes the index of the element at the rear of the queue.
+          size: An integer which represents the size of stack and queue.
+
+      """
+
+    # Write your code here
+    def __init__(self, size):
+        """Inits Solution with stack, queue, size, top, front and rear.
+        Arguments:
+          size: An integer to set the size of stack and queue.
+        """
         self.stack = []
-    
-    def pop(self):
-            x = self.stack.pop()
-            return x
-    
-    def push(self, item):
-            self.stack.append(item)
-    
-    def dequeue(self):
-            self.front += 1
-            x = self.queue.pop()
-            return x
-    
-    def enqueue(self, item):
+        self.queue = []
+        self.size = size
+        self.top = -1
+        self.rear = -1
+        self.front = -1
+
+    def is_stack_empty(self):
+
+        """
+        Check whether the stack is empty.
+        Returns:
+          True if it is empty, else returns False.
+        """
+        return self.top == -1
+
+    def is_queue_empty(self):
+        """
+        Check whether the queue is empty.
+
+        Returns:
+          True if it is empty, else returns False.
+        """
+        return self.front == -1 or self.front > self.rear
+
+    def is_stack_full(self):
+        """
+        Check whether the stack is full.
+        Returns:
+          True if it is full, else returns False.
+        """
+        return self.top == self.size - 1
+
+    def is_queue_full(self):
+        """
+        Check whether the queue is full.
+        Returns:
+          True if it is full, else returns False.
+        """
+        return self.rear == self.size - 1
+
+    def push_character(self, character):
+        """
+        Push the character to stack, if stack is not full.
+        Arguments:
+            character: A character that will be pushed to the stack.
+        """
+        if not self.is_stack_full():
+            self.stack.append(character)
+            self.top += 1
+
+    def enqueue_character(self, character):
+        """
+        Enqueue the character to queue, if queue is not full.
+        Arguments:
+            character: A character that will be enqueued to queue.
+        """
+        if not self.is_queue_full():
+            if  self.front == -1:
+                self.front = 0
             self.rear += 1
-            self.queue.append(item)
+            self.queue.append(character)
 
-string = "rotator"
+    def pop_character(self):
 
-solution = Solution(len(string))
+        """
+        Do pop operation if the stack is not empty.
+        Returns:
+          The data that is popped out if the stack is not empty.
+        """
+        if not self.is_stack_empty():
+            self.top -= 1
+            return self.stack.pop(self.top + 1)
 
-for char in string:
-    solution.enqueue(char)
-    solution.push(char)
+    def dequeue_character(self):
+        """
+        Do dequeue operation if the queue is not empty.
+        Returns:
+          The data that is dequeued if the queue is not empty.
+        """
+        if not self.is_queue_empty():
+            self.front += 1
+            return self.queue[self.front - 1] 
+                
 
-temp = []
 
-for index in range(len(solution.queue) - 1, -1, -1):
-    temp.append(solution.queue[index])
+# read the string text
+text = input()
 
-solution.queue = temp
-    
-size = 6
+# find the length of text
+length_of_text = len(text)
 
-retval = True
+# Create the Solution class object
+solution = Solution(length_of_text)
 
-for i in range(size):
-    queueItem = solution.dequeue()
-    stackItem = solution.pop()
-    if queueItem == stackItem:
-        continue
-    else:
-        retval = False
+# push/enqueue all the characters of string text to stack
+for index in range(length_of_text):
+    solution.push_character(text[index])
+    solution.enqueue_character(text[index])
 
-print(retval)
+is_palindrome = True
+'''
+pop the top character from stack
+dequeue the first character from queue
+compare both characters
+If the comparison fails, set is_palindrome as False.
+'''
+for index in range(length_of_text):
+    if solution.pop_character() != solution.dequeue_character():
+        is_palindrome = False
+
+
+# finally print whether string text is palindrome or not.
+if is_palindrome:
+    print("The word, " + text + ", is a palindrome.")
+else:
+    print("The word, " + text + ", is not a palindrome.")
